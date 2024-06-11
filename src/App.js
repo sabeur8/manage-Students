@@ -10,26 +10,33 @@ function App() {
     {student : "Asma Ben Hamouda" , astronomy : "C 78.4%", introductoryLogic : "A 80%", intermediateLogic : "A+ 95.3%"},
     {student : "ALi Ben Hamouda" , astronomy : "A+ 98.4%", introductoryLogic : "A 85%", intermediateLogic : "D 60.3%"}
   ]);
-  const [newSubject,setNewSubject]=useState('');
+  const [newStudent,setNewStudent]=useState('');
+  const [ArrNewStudent,setArrNewStudent] = useState([]);
+  
+  const handleInput = (e) =>{
+    const newStudent = e.target.value;
+    setArrNewStudent(newStudent.split(" "))
+    setNewStudent(newStudent);
+  }
 
   const mapper =(element) =>(
     <Student data = {element}/>
   )
 
   const [mappedStudents,setMappedStudents] = useState(students.map(mapper));
-  const handleInput = (e) =>{
-    const newSubject = e.target.value.trim();
-    setNewSubject(newSubject);
-  }
   
-  const handleAddSubject = () =>{
+  
+  const handleAddStudent = () =>{
     setStudents(
       (oldStudents) => 
-        {const newStudents =oldStudents.concat([newSubject]);
+        {const newStudents =oldStudents.concat([
+          {student :ArrNewStudent[0] ,astronomy : ArrNewStudent[1], introductoryLogic :  ArrNewStudent[2] ,intermediateLogic :ArrNewStudent[3] }
+        ]);
         setMappedStudents(newStudents.map(mapper));
         return newStudents;
       }
     );
+    setNewStudent('');
   }
 
 
@@ -46,9 +53,9 @@ function App() {
                 <option value="semester2">Semester 2</option>
                 <option>semestre 1 </option>
             </select>
-            <button>Add Student</button>
-            <button onClick={handleAddSubject}>Add subject</button>
-            <input type='text' onChange={handleInput}/>
+            <button onClick={handleAddStudent}>Add Student</button>
+            <button >Add subject</button>
+            <input type='text' onChange={handleInput} value={newStudent}/>
         </div>
       </div>
       <table>
