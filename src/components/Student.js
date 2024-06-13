@@ -1,12 +1,15 @@
 import React from "react";
-
 function Student (props) {
+
+  const mapper = (key) => (
+    <td> {props.data[key]}</td>
+  )
+  const mappedStudents = Object.keys(props.data).map(mapper)
+  
+
     return(
-        <tr> 
-      <td>{props.data.student}</td>
-      <td>{props.data.astronomy}</td>
-      <td>{props.data.intermediateLogic}</td>
-      <td>{props.data.introductoryLogic}</td>
+        <tr>
+     {mappedStudents}
     </tr>
     )
 }

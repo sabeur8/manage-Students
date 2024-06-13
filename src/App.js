@@ -10,17 +10,20 @@ function App() {
     {student : "Asma Ben Hamouda" , astronomy : "C 78.4%", introductoryLogic : "A 80%", intermediateLogic : "A+ 95.3%"},
     {student : "ALi Ben Hamouda" , astronomy : "A+ 98.4%", introductoryLogic : "A 85%", intermediateLogic : "D 60.3%"}
   ]);
-  const [newStudent,setNewStudent]=useState('');
   const [ArrNewStudent,setArrNewStudent] = useState([]);
+  const [newSubject,setNewSubject] =useState('');
   
-  const handleInput = (e) =>{
+  const handleInputStudent = (e) =>{
     const newStudent = e.target.value;
     setArrNewStudent(newStudent.split(" "))
-    setNewStudent(newStudent);
+  }
+  const handleInputSubject = (e) =>{
+    const newSubject = e.target.value;
+    setNewSubject(newSubject);
   }
 
   const mapper =(element) =>(
-    <Student data = {element}/>
+    <Student data = {element} />
   )
 
   const [mappedStudents,setMappedStudents] = useState(students.map(mapper));
@@ -36,9 +39,21 @@ function App() {
         return newStudents;
       }
     );
-    setNewStudent('');
   }
+  
 
+  const handleAddSubject = () =>{
+    setStudents(
+      (oldStudents)=>{
+        const newStudents = oldStudents.map( obj =>{return {...obj, [newSubject] : ' '}} )
+        setMappedStudents(newStudents.map(mapper));
+        return newStudents;
+      }
+    );
+    console.log(students);
+  }
+  const mappedSubjects= Object.keys(students[0]).map((key)=>(<td>{key}</td>))
+  console.log(Object.keys(students));
 
   return (
     <div>
@@ -50,20 +65,19 @@ function App() {
         <div class="term">
             <span>Academic Term:</span>
             <select>
-                <option value="semester2">Semester 2</option>
                 <option>semestre 1 </option>
+                <option value="semester2">Semester 2</option>
             </select>
-            <button onClick={handleAddStudent}>Add Student</button>
-            <button >Add subject</button>
-            <input type='text' onChange={handleInput} value={newStudent}/>
+            <button onClick={handleAddStudent}>Add Student</button> 
+            <input className='new student' type='text' placeholder='nom note1 note2 notn ...' onChange={handleInputStudent}/>
+            
+            <button onClick={handleAddSubject} >Add subject</button>
+            <input className='new subject ' type='text' placeholder='new subject' onChange={handleInputSubject}/>
         </div>
       </div>
       <table>
         <tr>
-          <td>Students</td>
-          <td>Astronomy</td>
-          <td>Intermediate Logic</td>
-          <td>Introductory Logic</td>
+          {mappedSubjects}
         </tr>
         {mappedStudents}
       </table>
